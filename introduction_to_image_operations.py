@@ -1,8 +1,8 @@
 import cv2
-import matplotlib.pyplot as plt
+import numpy as np
 
 
-def print_image_info(image: cv2.Mat) -> None:
+def print_image_info(image: np.ndarray) -> None:
     """
     Функция отображения информации об изображении в консоль
     Parameters
@@ -12,11 +12,10 @@ def print_image_info(image: cv2.Mat) -> None:
     print("Матрица изображения: \n", image[0])
     print("Высота:" + str(image.shape[0]), "Ширина:" + str(image.shape[1]))
     print("Количество каналов:" + str(image.shape[2]))
-    print("- - - "*10)
+    print("- - - " * 10)
 
 
-
-def count_center_pixel(image: cv2.Mat) -> tuple[int, int]:
+def count_center_pixel(image: np.ndarray) -> tuple[int, int]:
     """
     Функция рассчета центра изображения
     Parameters
@@ -32,7 +31,7 @@ def count_center_pixel(image: cv2.Mat) -> tuple[int, int]:
     return center
 
 
-def rotate_image(image: cv2.Mat, degree: int) -> cv2.Mat:
+def rotate_image(image: np.ndarray, degree: int) -> np.ndarray:
     """
     Функция поворота изображения на определенное количество градусов
     Parameters
@@ -54,7 +53,7 @@ def rotate_image(image: cv2.Mat, degree: int) -> cv2.Mat:
     return rotated_image
 
 
-def save_image(filename: str, image: cv2.Mat, file_path: str) -> None:
+def save_image(filename: str, image: np.ndarray, file_path: str) -> None:
     """
     Функция сохранения изображения
     Parameters
@@ -66,7 +65,7 @@ def save_image(filename: str, image: cv2.Mat, file_path: str) -> None:
     cv2.imwrite(file_path + filename + '.png', image)
 
 
-def show_image(image, image_title) -> None:
+def show_image(image: np.ndarray, image_title: str) -> None:
     """
     Функция отображения изображения
     Parameters
@@ -74,13 +73,13 @@ def show_image(image, image_title) -> None:
     image :Изображение
     image_title:Название изображение
     """
-    plt.imshow(image)
-    plt.title(image_title)
-    plt.axis('off')
-    plt.show()
+    cv2.namedWindow('PRESS ANY KEY TO CONTINUE - ' + image_title, cv2.WINDOW_NORMAL)
+    cv2.imshow('PRESS ANY KEY TO CONTINUE - ' + image_title, image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
-def mirror_image(image: cv2.Mat, mirror_flag: str = 'vertical'):
+def mirror_image(image: np.ndarray, mirror_flag: str = 'vertical'):
     """
     Функция отражения изображения
     Parameters
