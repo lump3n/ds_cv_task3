@@ -29,5 +29,5 @@ python3 introduction_to_image_operations.py
 ```
 Для запуска задачи 4 исолзвать команду 
 ```
-python3 task_4_basic_image_processing.py
+python3 basic_image_processing.py.py
 ```
