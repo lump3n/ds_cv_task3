@@ -80,12 +80,14 @@ def main():
     image_laplacian = cv2.convertScaleAbs(image_laplacian)
     show_image(image_laplacian, 'Изображение обработанное функцией Laplacian')
 
-    image_sobel = cv2.Sobel(image, cv2.CV_16S, 1, 0)
-    image_sobel = cv2.convertScaleAbs(image_sobel)
+    grad_sobel_x = cv2.convertScaleAbs(cv2.Sobel(image, cv2.CV_16S, 1, 0))
+    grad_sobel_y = cv2.convertScaleAbs(cv2.Sobel(image, cv2.CV_16S, 0, 1))
+    image_sobel = cv2.addWeighted(grad_sobel_x, 0.5, grad_sobel_y, 0.5, 0)
     show_image(image_sobel, 'Изображение обработанное функцией Sobel')
 
-    image_scharr = cv2.Scharr(image, cv2.CV_16S, 1, 0)
-    image_scharr = cv2.convertScaleAbs(image_scharr)
+    grad_scharr_x = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 1, 0))
+    grad_scharr_y = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 0, 1))
+    image_scharr = cv2.addWeighted(grad_scharr_x, 0.5, grad_scharr_y, 0.5, 0)
     show_image(image_scharr, 'Изображение обработанное функцией Scharr')
 
     # Поиск границ золотой подложки
@@ -99,8 +101,9 @@ def main():
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     image = cv2.medianBlur(image, 19)
-    image = cv2.Scharr(image, cv2.CV_16S, 1, 0)
-    image = cv2.convertScaleAbs(image)
+    image_x = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 1, 0))
+    image_y = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 0, 1))
+    image = cv2.addWeighted(image_x, 0.5, image_y, 0.5, 0)
     show_image(image, 'Поиск границ золотой подложки')
 
 
