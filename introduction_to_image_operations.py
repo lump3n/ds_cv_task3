@@ -9,9 +9,13 @@ def print_image_info(image: np.ndarray) -> None:
     ----------
     image : Изображение
     """
+    image_height = image.shape[0]
+    image_width = image.shape[1]
+    number_of_channels = image.shape[-1] if image.ndim == 3 else 1
+
     print("Матрица изображения: \n", image[0])
-    print("Высота:" + str(image.shape[0]), "Ширина:" + str(image.shape[1]))
-    print("Количество каналов:" + str(image.shape[2]))
+    print(f"Высота: {image_height}", f"Ширина: {image_width}")
+    print(f"Количество каналов: {number_of_channels}")
     print("- - - " * 10)
 
 
@@ -76,7 +80,7 @@ def show_image(image: np.ndarray, image_title: str) -> None:
     cv2.namedWindow('PRESS ANY KEY TO CONTINUE - ' + image_title, cv2.WINDOW_NORMAL)
     cv2.imshow('PRESS ANY KEY TO CONTINUE - ' + image_title, image)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv2.destroyWindow('PRESS ANY KEY TO CONTINUE - ' + image_title)
 
 
 def mirror_image(image: np.ndarray, mirror_flag: str = 'vertical'):
@@ -85,7 +89,7 @@ def mirror_image(image: np.ndarray, mirror_flag: str = 'vertical'):
     Parameters
     ----------
     image :Изображение
-    mirror_flag :Выбор направления отражения. vertical - Вертикальное отражение, horizontal - Горизонтальное отражение,
+    mirror_flag :Выбор направления отражения. vertical - Вертикальное отражени, horizontal - Горизонтальное отражение,
     both - И горизонтальое и вертикальное отражение одновременно
 
     Returns
@@ -152,6 +156,7 @@ def main():
     # Измение значения данного пикселя на (0, 0, 255)
     center = count_center_pixel(cropped_image)
     print('Центральный пиксель обрезанной области изображения: ', center)
+    print("- - - " * 10)
     cropped_image[center] = COLOR_BLUE
     show_image(cropped_image, 'Замена центрального пикселя обрезанного изображения синим цветом')
 
@@ -168,6 +173,14 @@ def main():
     show_image(cropped_image, 'Добавление текста rect')
     save_image(filename='cropped_image', image=cropped_image,
                file_path=PATH_SAVE_IMAGE)
+
+    # Дополнительно
+    # Проверка исправления функции print_image_info
+    print('ИНФОРМАЦИЯ ИЗНАЧАЛЬНОГО ИЗОБРАЖЕНИЯ')
+    print_image_info(image)
+    image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    print('ИНФОРМАЦИЯ ИЗОБРАЖЕНИЯ В ПРОСТРАСНТВЕ ЦВЕТОВ GRAY')
+    print_image_info(image_gray)
 
 
 if __name__ == '__main__':
