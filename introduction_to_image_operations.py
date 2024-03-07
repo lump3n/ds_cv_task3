@@ -5,9 +5,14 @@ import numpy as np
 def print_image_info(image: np.ndarray) -> None:
     """
     Функция отображения информации об изображении в консоль
+
     Parameters
     ----------
-    image : Изображение
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+    Returns
+    -------
+    None
     """
     image_height = image.shape[0]
     image_width = image.shape[1]
@@ -22,13 +27,16 @@ def print_image_info(image: np.ndarray) -> None:
 def count_center_pixel(image: np.ndarray) -> tuple[int, int]:
     """
     Функция рассчета центра изображения
+
     Parameters
     ----------
-    image :Изображение.
+    image : np.ndarray
+        Изображение в виде матрицы чисел
 
     Returns
     -------
-    Координаты центра изображения
+    (int, int)
+        Координаты центра изображения
     """
     height, width = image.shape[:2]
     center = (int(width / 2), int(height / 2))
@@ -38,15 +46,19 @@ def count_center_pixel(image: np.ndarray) -> tuple[int, int]:
 def rotate_image(image: np.ndarray, degree: int) -> np.ndarray:
     """
     Функция поворота изображения на определенное количество градусов
+
     Parameters
     ----------
-    image : Изображение
-    degree : Градусы поворота изображения.При положительном значении градусов(degree) поворот ПРОТИВ часовой стрелки,
-             при отрицательном - ПО часовой стрелке,
+    image : np.ndarray
+        Изображение в виде матрицы чисел
 
+    degree : int
+        Градусы поворота изображения.При положительном значении градусов(degree) поворот ПРОТИВ часовой стрелки,
+        при отрицательном - ПО часовой стрелке,
     Returns
     -------
-    Повернутое изображение
+    np.ndarray
+        Повернутое изображение
     """
     height, width = image.shape[:2]
     center = count_center_pixel(image)
@@ -60,11 +72,18 @@ def rotate_image(image: np.ndarray, degree: int) -> np.ndarray:
 def save_image(filename: str, image: np.ndarray, file_path: str) -> None:
     """
     Функция сохранения изображения
+
     Parameters
     ----------
-    filename :Имя сохраняемого изображения
-    image :Изображение
-    file_path :Путь сохранения изображения
+    filename : str
+        Имя сохраняемого изображения
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+    file_path : str
+        Путь сохранения изображения
+     Returns
+    -------
+    None
     """
     cv2.imwrite(file_path + filename + '.png', image)
 
@@ -72,10 +91,16 @@ def save_image(filename: str, image: np.ndarray, file_path: str) -> None:
 def show_image(image: np.ndarray, image_title: str) -> None:
     """
     Функция отображения изображения
+
     Parameters
     ----------
-    image :Изображение
-    image_title:Название изображение
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+    image_title: str
+        Название изображение
+    Returns
+    -------
+    None
     """
     cv2.namedWindow('PRESS ANY KEY TO CONTINUE - ' + image_title, cv2.WINDOW_NORMAL)
     cv2.imshow('PRESS ANY KEY TO CONTINUE - ' + image_title, image)
@@ -83,18 +108,24 @@ def show_image(image: np.ndarray, image_title: str) -> None:
     cv2.destroyWindow('PRESS ANY KEY TO CONTINUE - ' + image_title)
 
 
-def mirror_image(image: np.ndarray, mirror_flag: str = 'vertical'):
+def mirror_image(image: np.ndarray, mirror_flag: str = 'vertical') -> np.ndarray:
     """
     Функция отражения изображения
+
     Parameters
     ----------
-    image :Изображение
-    mirror_flag :Выбор направления отражения. vertical - Вертикальное отражени, horizontal - Горизонтальное отражение,
-    both - И горизонтальое и вертикальное отражение одновременно
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+    mirror_flag : str
+        Выбор направления отражения:
+        vertical - вертикальное отражени,
+        horizontal - горизонтальное отражение,
+        both - горизонтальое и вертикальное отражение одновременно.
 
     Returns
     -------
-    Отраженное изображение
+    np.ndarray
+        Отраженное изображение
     """
     mirror_flags = {'vertical': 1,
                     'horizontal': 0,
