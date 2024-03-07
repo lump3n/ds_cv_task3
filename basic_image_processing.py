@@ -3,7 +3,21 @@ import numpy as np
 from introduction_to_image_operations import show_image
 
 
-def make_images_in_different_color_spaces(image):
+def make_images_in_different_color_spaces(image: np.ndarray) -> dict:
+    """
+    Функция перевода исходного изображения в различные цветовые пространства и компановка их в словарь
+
+    Parameters
+    ----------
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+
+    Returns
+    -------
+    dict
+        Словарь изображений в разных цветовых пространствах, ключ словаря - цветовое пространство, значение -
+        изображение в виде матрицы чисел
+    """
     color_spaces = ('RGB', 'XYZ', 'HSV', 'HLS', 'LAB', 'LUV', 'YUV', 'GRAY')
     color_images = {color: cv2.cvtColor(image, getattr(cv2, 'COLOR_BGR2' + color))
                     for color in color_spaces}
@@ -12,7 +26,20 @@ def make_images_in_different_color_spaces(image):
     return color_images
 
 
-def bgr2cmyk(image):
+def bgr2cmyk(image: np.ndarray) -> np.ndarray:
+    """
+    Функция перевода изображения из цветового пространства bgr в цветовое пространство cmyk
+
+    Parameters
+    ----------
+    image : np.ndarray
+        Изображение в виде матрицы чисел
+
+    Returns
+    -------
+    np.ndarray
+        Изображение в виде матрицы чисел
+    """
     image = image.astype(float) / 255.
     k = 1 - np.max(image, axis=2)
     c = (1 - image[..., 2] - k) / (1 - k)
@@ -73,20 +100,26 @@ def main():
     show_image(image_bilateral_filter, 'Изображение обработанное функцией bilateralFilter')
 
     # Тестирование высокочастотных фильтров
-    image_canny = cv2.Canny(image, 50, 150)
+    image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    image_canny = cv2.Canny(image_gray, 50, 150)
     show_image(image_canny, 'Изображение обработанное функцией Canny')
 
-    image_laplacian = cv2.Laplacian(image, cv2.CV_64F, ksize=3)
+    image_laplacian = cv2.Laplacian(image_gray, cv2.CV_64F, ksize=3)
     image_laplacian = cv2.convertScaleAbs(image_laplacian)
     show_image(image_laplacian, 'Изображение обработанное функцией Laplacian')
 
-    grad_sobel_x = cv2.convertScaleAbs(cv2.Sobel(image, cv2.CV_16S, 1, 0))
-    grad_sobel_y = cv2.convertScaleAbs(cv2.Sobel(image, cv2.CV_16S, 0, 1))
+    grad_sobel_x = cv2.convertScaleAbs(cv2.Sobel(image_gray, cv2.CV_16S, 1, 0))
+    grad_sobel_y = cv2.convertScaleAbs(cv2.Sobel(image_gray, cv2.CV_16S, 0, 1))
+    grad_sobel_x = cv2.convertScaleAbs(grad_sobel_x)
+    grad_sobel_y = cv2.convertScaleAbs(grad_sobel_y)
     image_sobel = cv2.addWeighted(grad_sobel_x, 0.5, grad_sobel_y, 0.5, 0)
     show_image(image_sobel, 'Изображение обработанное функцией Sobel')
 
-    grad_scharr_x = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 1, 0))
-    grad_scharr_y = cv2.convertScaleAbs(cv2.Scharr(image, cv2.CV_16S, 0, 1))
+    grad_scharr_x = cv2.Scharr(image_gray, cv2.CV_16S, 1, 0)
+    grad_scharr_y = cv2.Scharr(image_gray, cv2.CV_16S, 0, 1)
+    grad_scharr_x = cv2.convertScaleAbs(grad_scharr_x)
+    grad_scharr_y = cv2.convertScaleAbs(grad_scharr_y)
     image_scharr = cv2.addWeighted(grad_scharr_x, 0.5, grad_scharr_y, 0.5, 0)
     show_image(image_scharr, 'Изображение обработанное функцией Scharr')
 
